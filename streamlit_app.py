@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Load the trained model and vectorizer
-with open('final_phishing_detector.pkl', 'rb') as model_file:
+with open('phishing_detector_model.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
 with open('tfidf_vectorizer.pkl', 'rb') as vec_file:
