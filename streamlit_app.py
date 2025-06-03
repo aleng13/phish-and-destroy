@@ -19,43 +19,36 @@ def check_password_strength_advanced(password):
     passed_checks = 0
     total_checks = 6
 
-    # 1. Length Check
     if len(password) >= 8:
         passed_checks += 1
     else:
         tips.append("🔴 Make it at least 8 characters long")
 
-    # 2. Digit Check
-    if re.search(r"\\d", password):
+    if re.search(r"\d", password):
         passed_checks += 1
     else:
         tips.append("🔴 Add at least one digit (0–9)")
 
-    # 3. Uppercase Check
     if re.search(r"[A-Z]", password):
         passed_checks += 1
     else:
         tips.append("🔴 Add an uppercase letter (A–Z)")
 
-    # 4. Lowercase Check
     if re.search(r"[a-z]", password):
         passed_checks += 1
     else:
         tips.append("🔴 Add a lowercase letter (a–z)")
 
-    # 5. Symbol Check
     if re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
         passed_checks += 1
     else:
         tips.append("🔴 Include at least one symbol (e.g., @, #, !)")
 
-    # 6. Common Password Check
     if password.lower() not in common_passwords:
         passed_checks += 1
     else:
         tips.append("🔴 Avoid common passwords like '123456' or 'password'")
 
-    # Score
     score = int((passed_checks / total_checks) * 100)
     if score == 100:
         strength = "🟩 Strong"
@@ -68,21 +61,29 @@ def check_password_strength_advanced(password):
 
 # Streamlit setup
 st.set_page_config(page_title="Phish & Destroy", page_icon="🎣")
+
+# Toggle dark/light theme (placeholder switch)
+st.toggle("🌗 Dark Mode", value=False, key="theme_toggle")
+
 st.markdown("""
     <h1 style='text-align: center;'>🎣 Phish & Destroy</h1>
     <p style='text-align: center;'>Your friendly AI tool to fight phishing and bad passwords.</p>
     <hr style='border: 1px solid #ddd;'>
 """, unsafe_allow_html=True)
 
-# Sidebar navigation
-page = st.sidebar.selectbox("🔧 Choose a tool", ["Phishing Detector", "Password Strength Checker"])
+# Tab-based navigation
+tab1, tab2 = st.tabs(["📧 Email Phishing Detector", "🔐 Password Checker"])
 
-# === Phishing Detection ===
-if page == "Phishing Detector":
-    st.subheader("📧 Email Phishing Detector")
+# === Phishing Detection Tab ===
+with tab1:
     st.markdown("Enter email content and check if it's phishing or not.")
 
-    email_text = st.text_area("📝 Paste email content here:", height=250)
+    if st.button("📋 Try Example Email"):
+        st.session_state["example_email"] = "Dear user, your account has been suspended. Please click the link below to verify your account immediately. http://phishy.fake/login"
+    else:
+        st.session_state.setdefault("example_email", "")
+
+    email_text = st.text_area("📝 Paste email content here:", height=250, value=st.session_state["example_email"])
     if st.button("🚨 Detect Phishing"):
         if email_text.strip() == "":
             st.warning("Please enter some email content.")
@@ -97,9 +98,8 @@ if page == "Phishing Detector":
             except Exception as e:
                 st.error("Error during prediction. Make sure model/vectorizer match input features.")
 
-# === Password Checker ===
-elif page == "Password Strength Checker":
-    st.subheader("🔐 Password Strength Checker")
+# === Password Checker Tab ===
+with tab2:
     st.markdown("Enter a password and get instant feedback on how strong it is.")
 
     password = st.text_input("🔑 Enter your password:", type="password")
@@ -110,6 +110,7 @@ elif page == "Password Strength Checker":
         else:
             strength, suggestions, score = check_password_strength_advanced(password)
             st.markdown(f"### Strength: {strength} ({score}%)")
+            st.progress(score)
             if suggestions:
                 st.markdown("**💡 Suggestions to Improve:**")
                 for tip in suggestions:
