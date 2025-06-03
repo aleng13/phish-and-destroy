@@ -11,7 +11,28 @@ with open('tfidf_vectorizer.pkl', 'rb') as vec_file:
     vectorizer = pickle.load(vec_file)
 
 # Common passwords list
-common_passwords = ["123456", "password", "123456789", "qwerty", "abc123"]
+common_passwords = [
+    "123456",
+    "password",
+    "123456789",
+    "qwerty",
+    "12345678",
+    "111111",
+    "12345",
+    "password123",
+    "admin",
+    "welcome",
+    "test",
+    "qwerty123",
+    "iloveyou",
+    "p@ssword",
+    "myself",
+    "dragon",
+    "football",
+    "computer",
+    "superman",
+    "changeit"
+]
 
 # Password checker function
 def check_password_strength_advanced(password):
