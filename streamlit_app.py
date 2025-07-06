@@ -9,17 +9,17 @@ from streamlit_lottie import st_lottie
 import requests
 
 # Load model and vectorizer
-with open('phishing_detector_model.pkl', 'rb') as model_file:
+with open('phishing_detector_model_enhanced.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
-with open('tfidf_vectorizer.pkl', 'rb') as vec_file:
+with open('tfidf_vectorizer_enhanced.pkl', 'rb') as vec_file:
     vectorizer = pickle.load(vec_file)
 
 try:
-    with open('feature_scaler.pkl', 'rb') as scaler_file:
+    with open('feature_scaler_enhanced.pkl', 'rb') as scaler_file:
         scaler = pickle.load(scaler_file)
 except FileNotFoundError:
-    st.error("Error: 'feature_scaler.pkl' not found. This file is crucial for scaling numerical features correctly.")
+    st.error("Error: 'feature_scaler_enhanced.pkl' not found. This file is crucial for scaling numerical features correctly.")
     st.stop()
 
 common_passwords = ["123456", "password", "123456789", "qwerty", "abc123"]
