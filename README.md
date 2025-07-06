@@ -57,13 +57,6 @@ Two models were trained and evaluated:
 
 - **Logistic Regression** performed slightly better and was selected for deployment.
 - Confusion matrices and classification reports are included in the repo.
-
-### 📊 Evaluation Visuals
-
-| Logistic Regression                        | Naive Bayes                              |
-|-------------------------------------------|------------------------------------------|
-| ![Logistic Regression](Linear_Regress-Accuracy.png) | ![Naive Bayes](Naive_bayes-Accuracy.png) |
-
 ---
 
 ## 🔐 Password Strength Checker
