@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from streamlit_lottie import st_lottie
 import requests
 
-# Load model and vectorizer
+# Load model and vectorizer (using enhanced filenames)
 with open('phishing_detector_model_enhanced.pkl', 'rb') as model_file:
     model = pickle.load(model_file)
 
@@ -89,10 +89,8 @@ def load_lottieurl(url: str):
     return r.json()
 
 st.set_page_config(page_title="Phish & Destroy", page_icon="🎣")
-st.toggle("🌗 Dark Mode", value=False, key="theme_toggle")
 
 lottie_phish = load_lottieurl("https://assets1.lottiefiles.com/private_files/lf30_vnseqwqr.json")
-
 if lottie_phish:
     st_lottie(lottie_phish, height=250, key="phishing_lottie")
 
@@ -105,7 +103,7 @@ st.markdown("""
 with st.expander("❓ What is Phishing?"):
     st.markdown("""
     Phishing is a fraudulent attempt to obtain sensitive information by disguising as a trustworthy entity in digital communication.
-    
+
     ### 🧨 Dangers of Phishing:
     - Identity theft
     - Financial loss
@@ -124,18 +122,22 @@ tab1, tab2 = st.tabs(["📧 Email Phishing Detector", "🔐 Password Checker"])
 with tab1:
     st.markdown("Enter email content and check if it's phishing or not.")
 
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        email_text = st.text_area("📝 Paste email content here:", height=250, key="example_email")
+    with col2:
+        if st.button("❌ Clear Text"):
+            st.session_state["example_email"] = ""
+
     if st.button("📋 Try Example Email"):
         st.session_state["example_email"] = "Dear user, your account has been suspended. Please click the link below to verify your account immediately. http://phishy.fake/login"
-    else:
-        st.session_state.setdefault("example_email", "")
 
-    email_text = st.text_area("📝 Paste email content here:", height=250, value=st.session_state["example_email"])
     if st.button("🚨 Detect Phishing"):
-        if email_text.strip() == "":
+        if st.session_state["example_email"].strip() == "":
             st.warning("Please enter some email content.")
         else:
             try:
-                X_input = extract_features(email_text)
+                X_input = extract_features(st.session_state["example_email"])
                 prediction = model.predict(X_input)[0]
                 if prediction == 1:
                     st.error("⚠️ This email looks like **Phishing**!")
