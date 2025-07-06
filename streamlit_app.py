@@ -122,31 +122,31 @@ tab1, tab2 = st.tabs(["📧 Email Phishing Detector", "🔐 Password Checker"])
 with tab1:
     st.markdown("Enter email content and check if it's phishing or not.")
 
-    col1, col2 = st.columns([3, 1])
+    email_text = st.text_area("📝 Paste email content here:", height=250, key="example_email")
+
+    col1, col2, col3 = st.columns([1, 1, 2])
     with col1:
-        email_text = st.text_area("📝 Paste email content here:", height=250, key="example_email")
+        if st.button("🚨 Detect Phishing"):
+            if st.session_state["example_email"].strip() == "":
+                st.warning("Please enter some email content.")
+            else:
+                try:
+                    X_input = extract_features(st.session_state["example_email"])
+                    prediction = model.predict(X_input)[0]
+                    if prediction == 1:
+                        st.error("⚠️ This email looks like **Phishing**!")
+                    else:
+                        st.success("✅ This email seems **Legitimate**.")
+                    st.toast("Prediction complete! ✅")
+                except Exception as e:
+                    st.error(f"Error during prediction: {e}.")
+                    st.exception(e)
     with col2:
         if st.button("❌ Clear Text"):
             st.session_state["example_email"] = ""
-
-    if st.button("📋 Try Example Email"):
-        st.session_state["example_email"] = "Dear user, your account has been suspended. Please click the link below to verify your account immediately. http://phishy.fake/login"
-
-    if st.button("🚨 Detect Phishing"):
-        if st.session_state["example_email"].strip() == "":
-            st.warning("Please enter some email content.")
-        else:
-            try:
-                X_input = extract_features(st.session_state["example_email"])
-                prediction = model.predict(X_input)[0]
-                if prediction == 1:
-                    st.error("⚠️ This email looks like **Phishing**!")
-                else:
-                    st.success("✅ This email seems **Legitimate**.")
-                st.toast("Prediction complete! ✅")
-            except Exception as e:
-                st.error(f"Error during prediction: {e}.")
-                st.exception(e)
+    with col3:
+        if st.button("📋 Try Example Email"):
+            st.session_state["example_email"] = "Dear user, your account has been suspended. Please click the link below to verify your account immediately. http://phishy.fake/login"
 
 with tab2:
     st.markdown("Enter a password and get instant feedback on how strong it is.")
