@@ -53,7 +53,7 @@ Two models were trained and evaluated:
 | Model               | Accuracy | Precision | Recall | F1 Score |
 |--------------------|----------|-----------|--------|----------|
 | **Logistic Regression** (Final Model) | **98%**   | 98%       | 99%    | 98%      |
-| Naive Bayes         | 96%      | 95%       | 97%    | 96%      |
+| Naive Bayes         | 97%      | 96%       | 97%    | 96%      |
 
 - **Logistic Regression** performed slightly better and was selected for deployment.
 - Confusion matrices and classification reports are included in the repo.
@@ -62,7 +62,7 @@ Two models were trained and evaluated:
 
 | Logistic Regression                        | Naive Bayes                              |
 |-------------------------------------------|------------------------------------------|
-| ![Logistic Regression](confusion_matrix_lr.png) | ![Naive Bayes](confusion_matrix_nb.png) |
+| ![Logistic Regression](Linear_Regress-Accuracy.png) | ![Naive Bayes](Naive_bayes-Accuracy.png) |
 
 ---
 
@@ -130,10 +130,3 @@ Feel free to connect:
 - GitHub: https://github.com/aleng13
 
 ---
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
